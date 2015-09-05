@@ -41,5 +41,6 @@ class window.App extends Backbone.Model
     else @endGame('player')
 
   endGame: (winner) ->
-    console.log(winner)
+    alert(winner)
+    
 
