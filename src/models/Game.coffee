@@ -4,26 +4,19 @@ class window.Game extends Backbone.Model
     @set 'app', app
     @set 'player', @get('app').get('player')
     @set 'dealer', @get('app').get('dealer')
-    @get('player').on 'stand', => @dealersTurn()
+    @get('player').on 'stand', => @get('app').dealerTurn()
 
-    if @get('app').initialCheck isnt 'continue' then @get('app').endGame()
+    winner = @get('app').initialCheck()
+    if winner isnt 'continue' then @get('app').endGame(winner)
 
-    @get('player').on 'add', => @determineNextMove
+    @get('player').on 'hit', => @determineNextMove()
 
   determineNextMove: ->
-    result = @player.isTwentyOne()
+    result = @get('player').isTwentyOne()
     if result then @get('app').dealerTurn()
     
-    result = @player.isOverTwentyOne()
-    if result then @get('app').endGame()
-    return
-
-  dealersTurn: ->
-    console.log("test")
-
-
-
-
+    result = @get('player').isOverTwentyOne()
+    if result then @get('app').endGame('dealer')
 
 # game start: dealer has 2 cards, player has 2 cards
 

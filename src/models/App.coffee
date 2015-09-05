@@ -7,32 +7,39 @@ class window.App extends Backbone.Model
     @set 'player', @get('deck').dealPlayer()
     @set 'dealer', @get('deck').dealDealer()
     @set 'gameModel', new Game(@)
+    # @get('player').on 'add', => determineNextMove
 
   compareHands: ->
-    bestPlayerHand = @player.bestHand()
-    bestDealerHand = @dealer.bestHand()
+    bestPlayerHand = @get('player').bestHand()
+    bestDealerHand = @get('dealer').bestHand()
 
     if bestDealerHand > bestPlayerHand
       'dealer'
-    else if bestPlayerHand > bestDealerHand 
+    else if bestPlayerHand > bestDealerHand
       'player'
     else
       'push'
 
-  initialCheck: -> 
-    if @dealer.isTwentyOne
-      if @player.isTwentyOne
+  initialCheck: ->
+    if @get('dealer').isTwentyOne()
+      if @get('player').isTwentyOne()
         'push'
       else
         'dealer'
-    else if @player.isTwentyOne
+    else if @get('player').isTwentyOne()
       'player'
     else
       'continue'
 
   dealerTurn: ->
+    @get('dealer').reveal()
+    while @get('dealer').isUnderSeventeen()
+      @get('dealer').hit()
+    if @get('dealer').isBetweenSeventeenAndTwentyOne()
+      winner = @compareHands()
+      @endGame(winner)
+    else @endGame('player')
 
-
-  endGame: ->
-
+  endGame: (winner) ->
+    console.log(winner)
 
