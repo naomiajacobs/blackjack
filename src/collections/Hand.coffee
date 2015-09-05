@@ -7,6 +7,8 @@ class window.Hand extends Backbone.Collection
     @add(@deck.pop())
     @last()
 
+  stand: ->
+    @trigger('stand', @)
 
   hasAce: -> @reduce (memo, card) ->
     memo or card.get('value') is 1
@@ -29,11 +31,11 @@ class window.Hand extends Backbone.Collection
   
   isTwentyOne: -> if @scores[1] is 21 or @scores[0] is 21 then true else false
 
-  ifUnderSeventeen: -> if @minScore < 17 then true else false
+  isUnderSeventeen: -> if @minScore < 17 then true else false
 
-  ifBetweenSeventeenAndTwentyOne: -> if @minScore >= 17 or @minScore < 22 then true else false
+  isBetweenSeventeenAndTwentyOne: -> if @minScore >= 17 or @minScore < 22 then true else false
   
-  ifOverTwentyOne: -> if @minScore > 21 then true else false
+  isOverTwentyOne: -> if @minScore > 21 then true else false
 
-  ifUnderTwentyOne: -> if @minScore < 21 then true else false
+  isUnderTwentyOne: -> if @minScore < 21 then true else false
 

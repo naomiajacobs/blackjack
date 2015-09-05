@@ -1,9 +1,28 @@
-# TODO: Refactor this model to use an internal Game Model instead
-# of containing the game logic directly.
 class window.Game extends Backbone.Model
-  initialize: (app) -> 
+
+  initialize: (app) ->
     @set 'app', app
+    @set 'player', @get('app').get('player')
+    @set 'dealer', @get('app').get('dealer')
+    @get('player').on 'stand', => @dealersTurn()
+
     if @get('app').initialCheck isnt 'continue' then @get('app').endGame()
+
+    @get('player').on 'add', => @determineNextMove
+
+  determineNextMove: ->
+    result = @player.isTwentyOne()
+    if result then @get('app').dealerTurn()
+    
+    result = @player.isOverTwentyOne()
+    if result then @get('app').endGame()
+    return
+
+  dealersTurn: ->
+    console.log("test")
+
+
+
 
 
 # game start: dealer has 2 cards, player has 2 cards
@@ -22,7 +41,7 @@ class window.Game extends Backbone.Model
 
   # if player hits
     # add card
-    # if player total < 21 (call playerHand.isUnderTwentyOne)
+    # if player total < 21 (call playerHand.ppisUnderTwentyOne)
       # *** CALL RECURSION ***
 
     # if player total === 21 (call playerHand.isTwentyOne)
